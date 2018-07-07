@@ -32,7 +32,7 @@ async def order(symbol, quantity, price, side, key, secret, startprice):
         elif(respjson['orderId']):
             print(respjson['orderId'])
     finally:
-        saveOrder(payload, msg, startprice)
+        tradestore.saveOrder(payload, msg, startprice)
         
         
 

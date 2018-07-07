@@ -8,16 +8,17 @@ lastprice=0.0
 stop = 0.0
 entryprice = 0.0
 
-async def tickerclient(symbol):
+async def tickerclient(symbol, trailerstop, stoploss, quantity, orderdelta, key, secret, ordertype):
     s = symbol.lower()
     async with websockets.connect(
             f"wss://stream.binance.com:9443/ws/{s}@ticker") as websocket:
         async for message in websocket:
-            if(await trailer(message, symbol, websocket)):
+            if(await trailer(message, symbol, websocket, trailerstop, stoploss, quantity, orderdelta, key, secret, ordertype)):
                 break
             
-async def trailer(message, symbol,  websocket):
-    global lastprice, stop, stoploss, quantity, orderdelta, key, secret,entryprice
+async def trailer(message, symbol,  websocket, trailerstop, stoploss, quantity, orderdelta, key, secret, ordertype):
+    #global lastprice, stop, stoploss, quantity, orderdelta, key, secret,entryprice, ordertype
+    global lastprice, stop,entryprice
     ticker = json.loads(message)
     #print last price
     tickerPrice = float(ticker['c'])
